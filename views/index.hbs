@@ -1,0 +1,70 @@
+
+<div class="row">
+	<div class="twelve columns">
+		<h1>Organiser une nouvelle partie</h1>
+
+		{{#if error}}
+		<h3 class="error">{{error}}</h3>
+		{{/if}}
+	</div>
+</div>
+
+<!-- The above form looks like this -->
+<form action="/pickup/create" method="post">
+	<div class="row">
+		<div class="twelve columns">
+			<label for="playersCount">Combien de place veux-tu ? (en te comptant)</label>
+			<input name="players" class="u-full-width" type="number" id="playersCount" min="2" max="15">
+		</div>
+	</div>
+	<div class="row">
+		<div class="twelve columns">
+			<label for="dateInput">A quelle date souhaites-tu démarrer ?</label>
+			<input name="date" class="u-full-width" type="text" placeholder="25/05/2019 16:58" id="dateInput">
+		</div>
+	</div>
+	<div class="row">
+		<div class="twelve columns">
+			<label for="gameSelect">A quel jeu veux-tu jouer ?</label>
+			<select name="game" class="u-full-width" id="gameSelect">
+				{{#each games}}
+					<option value="{{this}}">{{this}}</option>
+				{{/each}}
+			</select>
+			<input name="otherGame" class="u-full-width" type="text" placeholder="Quake 3 Arena" id="otherGame" style="display: none">
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="twelve columns">
+			<input type="hidden" name="token" value="{{token}}"/>
+			<input class="button-primary twelve columns" type="submit" value="Créer">
+		</div>
+	</div>
+</form>
+
+
+<script>
+	flatpickr("#dateInput", {
+		"locale": "fr",
+		enableTime: true,
+		dateFormat: "d/m/Y H:i",
+		minDate: "today",
+		maxDate: new Date().fp_incr(30),
+		time_24hr: true,
+		defaultHour: 21,
+		minuteIncrement : 15,
+	});
+
+
+	document.getElementById('gameSelect').addEventListener('change', function(){
+
+		if( this.value == 'Autre' ) {
+			document.getElementById('otherGame').style.display = 'block';
+		}
+		else {
+			document.getElementById('otherGame').style.display = 'none';
+		}
+	});
+
+</script>

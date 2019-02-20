@@ -1,0 +1,36 @@
+body {
+	background: #ffffff;
+	color: #191919;
+	font-family: "Open Sans", sans-serif;
+}
+
+.error {
+	color: red;
+}
+
+.row:first-of-type {
+	margin-top: 50px;
+}
+
+input[type="number"]:focus,input[type="text"]:focus, select:focus {
+	border-color: #f5a623;
+}
+
+input[type="submit"].button-primary, input[type="submit"].button-primary:hover{
+	background-color: #f5a623;
+	border-color: #f5a623;
+
+}
+
+input[type="submit"].button-primary:hover {
+	opacity: 0.8;
+}
+
+.flatpickr-day.selected, .flatpickr-day.selected:hover {
+	background-color: #f5a623;
+	border-color: #f5a623;
+}
+
+h1 {
+	text-align: center;
+}
