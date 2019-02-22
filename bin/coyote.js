@@ -157,9 +157,9 @@ client.on('message', msg => {
 
 	if (msg.channel.type != 'dm') return;
 
-	if (msg.author.bot) return; //if it's another bot sending the message
-	if (msg.mentions.everyone === true) return; // if the message is not for the bot
-	if (msg.channel.type != 'dm' && msg.channel.guild.id != config.serverId) return; //if the bot listing to another discord server
+	//if (msg.author.bot) return; //if it's another bot sending the message
+	//if (msg.mentions.everyone === true) return; // if the message is not for the bot
+	//if (msg.channel.type != 'dm' && msg.channel.guild.id != config.serverId) return; //if the bot listing to another discord server
 
 	try {
 		eventHandlerOb.handleMessage(msg);

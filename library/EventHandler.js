@@ -68,6 +68,7 @@ exports.EventHandler = class {
 				&& reaction.emoji.name == "❌"
 				&& userId == pOb.owner
 			) {
+				this.cancel( pickupId)
 				pOb.cancel( userId )
 				reaction.message.delete()
 			}
@@ -95,12 +96,12 @@ exports.EventHandler = class {
 		}
 
 		//!liste
-		if( this.cleanMessage == this.prefix +  'liste' ) {
+		/*if( this.cleanMessage == this.prefix +  'liste' ) {
 			this.listPickups().then( (message) => {
 				this.message.author.send( message );
 
 			});
-		}
+		}*/
 	}
 
 	async create() {

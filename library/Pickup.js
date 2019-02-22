@@ -5,8 +5,6 @@ var bluebird = require("bluebird");
 bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
 
-const config = require( __dirname + '/../config.json');
-
 exports.Pickup = class {
 
 	constructor() {
@@ -18,7 +16,6 @@ exports.Pickup = class {
 		this.players = false;
 		this.owner = false;
 		this.spots = false;
-		this.serverId = config.serverId;
 	}
 
 	async init( pickupId ) {
@@ -29,8 +26,6 @@ exports.Pickup = class {
 				console.log( "Pickup id " + pickupId + " does not exist" );
 				return false;
 			}
-
-			if( obj.serverId != this.serverId ) return false;
 
 			this.id = pickupId;
 			this.game = obj['game'];
@@ -110,7 +105,6 @@ exports.Pickup = class {
 				'owner': this.owner,
 				'spots' : this.spots,
 				'time' : this.time,
-				'serverId' : config.serverId,
 			}, function (err, res) {
 				this.id = key;
 				Promise.resolve( key );
