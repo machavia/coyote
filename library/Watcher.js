@@ -14,12 +14,14 @@ exports.Watcher = class {
 	listPickups() {
 		let time = Math.floor(Date.now() / 1000);
 
+
 		this.pickupOb.list().then( (pickups) => {
 
 			for (let pickup of pickups) {
+				console.log( pickups );
 				if( pickup.status == 'waiting' ) this.publishNewPickup( pickup )
-				if( time >= pickup.time && pickup.status == 'published' ) this.startPickup( pickup )
-				if( time >= (pickup.time + 60*60*2 ) && pickup.status == 'done' ) this.deleteExpired( pickup )
+				else if( time >= pickup.time && pickup.status == 'published' ) this.startPickup( pickup )
+				else if( time >= (parseInt(pickup.time) + 60*60*2 ) && pickup.status == 'done' ) this.deleteExpired( pickup )
 			}
 		})
 	}
@@ -40,8 +42,8 @@ exports.Watcher = class {
 	}
 
 	deleteExpired( pickup ) {
-		this.pickupOb.init( pickup.id )
-		this.pickupOb.cancel()
 		this.chat.deletePickup( pickup.id )
+		this.pickupOb.init( pickup.id ).then( () => this.pickupOb.cancel() )
+
 	}
 }

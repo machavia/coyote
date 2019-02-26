@@ -240,7 +240,6 @@ exports.EventHandler = class {
 				messages.forEach((msg) => {
 					let messagePickupId = msg.content.match( /^\#(\d+)\s/)
 					if( messagePickupId != null && messagePickupId[1] == pickupId ) {
-						console.log( 'deleting', msg.content );
 						msg.delete()
 					}
 				})
