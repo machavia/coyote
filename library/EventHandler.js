@@ -35,7 +35,7 @@ exports.EventHandler = class {
 	}
 
 	handleReaction( reaction, user, type ) {
-		if( reaction.emoji.name != "👍" && reaction.emoji.name != "❌" ) return false;
+		if( reaction.emoji.name != "✅" && reaction.emoji.name != "❌" ) return false;
 
 		let pickupId = reaction.message.content.match( /^\#(\d+)\s/)
 		if( pickupId == null ) {
@@ -49,7 +49,7 @@ exports.EventHandler = class {
 		pOb.init( pickupId )
 		.then(() => {
 
-			if( reaction.emoji.name == "👍" ) {
+			if( reaction.emoji.name == "✅" ) {
 				if( type == 'add' ) {
 					pOb.join( userId )
 				}
@@ -94,21 +94,13 @@ exports.EventHandler = class {
 				this.message.author.send( message );
 			});
 		}
-
-		//!liste
-		/*if( this.cleanMessage == this.prefix +  'liste' ) {
-			this.listPickups().then( (message) => {
-				this.message.author.send( message );
-
-			});
-		}*/
 	}
 
 	async create() {
 		const ob = new Token()
 		const token = ob.create( this.userId )
 
-		const message = 'Pour créer une partie utilise le lien suivant : ' +  config.portalUrl + '/pickup/create?token=' + token
+		const message = 'Pour créer une #SessionGKS utilise le lien suivant : ' +  config.portalUrl + '/pickup/create?token=' + token
 
 		return message
 	}
@@ -125,76 +117,9 @@ exports.EventHandler = class {
 				console.log( 'Unknown player id ' + p );
 				return false;
 			}
-			player.send( 'Ta partie de ' + game + ' est annulée' );
+			player.send( 'Ta #SessionGKS de ' + game + ' est annulée' );
 		}
 
-	}
-
-
-	/**
-	 * !liste
-	 * @returns {Promise<T>}
-	 */
-	async listPickups() {
-		const discordClient = this.discordClient
-		const pickupOb = new Pickup()
-
-		return pickupOb.getWaiting().then( (pickups) => {
-
-			if( pickups.length == 0 ) {
-				return Promise.resolve( 'Aucune partie n\'est programmée pour le moment. :slight_frown:' + "\n" + 'Essayes `!creer` pour en démarrer une !');
-			}
-
-			let gamesMessage = [];
-			let instaPickups = [];
-
-			for( let pickup of pickups ) {
-				let message = '';
-
-				//nombre de places libres
-				let emptySpots = (pickup.spots - pickup.players.length);
-				if (emptySpots == 0) message += '**COMPLET**';
-				else if (emptySpots == 1) message += '**une** Place restante (vite).';
-				else message += '**' + emptySpots + '** Places restantes.';
-
-				//joueurs inscrits
-				message += "\n"
-				message += 'Inscrits : '
-				let players = [];
-				pickup.players.forEach((player) => {
-					let playerOb = discordClient.users.get(player);
-					if (playerOb !== undefined) players.push('__' + playerOb.username + '__')
-				});
-				message += players.join(' / ') + "\n";
-
-				//pour s'inscrire
-				//message += ':arrow_right: Pour s\'inscrire `!joindre ' + pickup.id + "`\n";
-
-				if( pickup.status == 'ready' ) {
-					let header = ':small_orange_diamond: Un **' + pickup.game + '** est prêt à partir !' + "\n";
-					instaPickups.push( header + message);
-				}
-				else {
-					let header = ':small_blue_diamond: **' + pickup.game + '** le *' + moment.unix(pickup.time).format('LLLL') + '*' + "\n";
-					gamesMessage.push( header + message);
-				}
-
-			}
-
-			let message = "";
-			if( instaPickups.length > 0 ) {
-				message += 'Les parties suivantes sont en attentes de joueurs : ' + "\n\n";
-				message += instaPickups.join( '--------------------------------------' +"\n" );
-				if( gamesMessage.length > 0 ) message += "\n\n";
-			}
-
-			if( gamesMessage.length > 0 ) {
-				message += 'Les parties suivantes ont été programmées : ' +  "\n\n"
-				message += gamesMessage.join( '--------------------------------------' +"\n" );
-			}
-
-			return Promise.resolve( message );
-		});
 	}
 
 

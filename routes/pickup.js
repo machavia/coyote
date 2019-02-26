@@ -42,8 +42,8 @@ router.post('/create', function(req, res) {
 
 	let eventTime = moment(date, 'DD/MM/YYYY HH:mm', 'fr');
 
-	if( players <2 || players > 15 ) {
-		error = "Le nombre de joueurs doit se trouver entre 2 et 15"
+	if( players <2 || players > 32 ) {
+		error = "Le nombre de joueurs doit se trouver entre 2 et 32"
 	}
 	else if( game != 'Autre' && !games.includes( game ) ) {
 		error = game +  " n'est pas dans notre liste de jeux"
@@ -89,6 +89,5 @@ router.post('/create', function(req, res) {
 		});
 	}
 });
-
 
 module.exports = router;
